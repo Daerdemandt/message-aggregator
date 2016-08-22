@@ -1,9 +1,11 @@
 sources:
-    test:
+    test source:
         test_source1:
             description: Some test source
+            stub message: e
         test_source2:
             description: Another test source
+            stub message: w
 
 feeds:
     test_feed:
@@ -15,7 +17,6 @@ feeds:
 users:
     test_user:
         description: Test user
-        key: not implemented
         feeds:
             - test_feed
             
