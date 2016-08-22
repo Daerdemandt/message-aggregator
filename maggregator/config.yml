@@ -1,0 +1,21 @@
+sources:
+    test:
+        test_source1:
+            description: Some test source
+        test_source2:
+            description: Another test source
+
+feeds:
+    test_feed:
+        description: Some test feed
+        sources:
+            - test_source1
+            - test_source2
+
+users:
+    test_user:
+        description: Test user
+        key: not implemented
+        feeds:
+            - test_feed
+            
