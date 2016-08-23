@@ -5,9 +5,6 @@ from collections import Counter
 import sources
 
 #TODO: use messages to explain what's wrong in the config
-#TODO: check that feed names and user names are unique
-#TODO: check that only existing feeds are used in users
-#TODO: check that only existing sources are used in feeds
 #TODO: check for keyfile in user
 
 #TODO: check session key expiration time
@@ -45,11 +42,23 @@ def parse(filename):
     }
 
     all_sources = [source for type_sources in config['sources'].values() for source in type_sources.keys()]
-    if len(all_sources) != len(set(all_sources)):
+    sources_set = set(all_sources)
+    if len(all_sources) != len(sources_set):
         counts = Counter(all_sources)
-        reused_names = {source for source in all_sources if counts[source]  > 1}
+        reused_names = [source for source in sources_set if counts[source]  > 1]
         raise Invalid('Some source names are reused:' + ', '.join(reused_names))
-    config['a'] = all_sources
+
+    for feed_name, feed in config['feeds'].items():
+        for source in feed['sources']:
+            if source not in sources_set:
+                raise Invalid('Unknown source "' + source + '" at feed "' + feed_name + '"')
+
+    feeds = set(config['feeds'].keys())
+
+    for username, user in config['users'].items():
+        for feed in user['feeds']:
+            if feed not in feeds:
+                raise Invalid('Unknown feed "' + feed + '" at user "' + username + '"')
 
     return config
 
