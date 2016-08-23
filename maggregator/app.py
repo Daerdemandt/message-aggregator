@@ -1,12 +1,19 @@
 from flask import Flask, abort, request
 from pprint import pformat
 from config import parse
+from sources import spawn
 
 config = parse('config.yml')
 
 app = Flask(__name__)
 
+sources = spawn(config['sources'])
 
+#TODO: check that this actually works
+for source in sources['webhook']:
+    @app.route('/webhooks/' + source.name)
+    def handle():
+        source.handle()
 
 @app.route('/health')
 def get_health():
@@ -26,6 +33,8 @@ def get_feed(feedname):
     if user not in config['users'] or feedname not in config['users'][user]['feeds']:
         abort(403)
     # Poll ondemand sources
+    for source in sources['ondemand']:
+        source.refresh()
     # query the db
     return "nothing here yet"
 

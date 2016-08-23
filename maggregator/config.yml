@@ -5,10 +5,10 @@ sources:
     test source:
         test_source1:
             description: Some test source
-            stub message: e
+            stub_message: e
         test_source2:
             description: Another test source
-            stub message: w
+            stub_message: w
 
 feeds:
     test_feed:
