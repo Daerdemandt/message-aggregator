@@ -9,6 +9,10 @@ sources:
         test_source2:
             description: Another test source
             stub_message: w
+    webhook test source:
+        test source3:
+            description: kjgkjgkjg
+            stub_message: kljh
 
 feeds:
     test_feed:

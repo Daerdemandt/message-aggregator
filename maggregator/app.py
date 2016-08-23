@@ -2,18 +2,20 @@ from flask import Flask, abort, request
 from pprint import pformat
 from config import parse
 from sources import spawn
+from persistence import makedb
 
 config = parse('config.yml')
 
 app = Flask(__name__)
 
-sources = spawn(config['sources'])
+persistence = makedb() # TODO: read stuff from config
+sources = spawn(config['sources'], persistence)
 
-#TODO: check that this actually works
-for source in sources['webhook']:
-    @app.route('/webhooks/' + source.name)
-    def handle():
-        source.handle()
+@app.route('/webhooks/<source>')
+def handle_webhook(source):
+    if source in sources['webhook']:
+        return sources['webhook'][source].handle()
+    abort(404)
 
 @app.route('/health')
 def get_health():
@@ -35,8 +37,8 @@ def get_feed(feedname):
     # Poll ondemand sources
     for source in sources['ondemand']:
         source.refresh()
-    # query the db
-    return "nothing here yet"
+    res = persistence.messages.find()
+    return pformat(list(res))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

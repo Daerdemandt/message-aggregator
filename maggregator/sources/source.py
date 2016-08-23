@@ -2,12 +2,17 @@ from abc import ABCMeta, abstractmethod
 from good import Schema
 
 class Source(metaclass=ABCMeta):
-    def __init__(self, name, description):
+    def __init__(self, name, description, persistence):
         self.name = name
         self.description = description
-    def save_message(message, sender, datetime):
-        # name would be taken from self.name
-        pass
+        self.persistence = persistence
+    def save_message(self, message, sender, datetime):
+        self.persistence.messages.insert_one({
+            'message' : message,
+            'sender' : sender,
+            'datetime' : datetime,
+            'source' : self.name
+        })
     @classmethod
     def get_config_validators(cls):
         return {
@@ -16,9 +21,9 @@ class Source(metaclass=ABCMeta):
 
 
 class OndemandSource(Source):
-    def __init__(self, name, description, minimal_refresh_delay):
+    def __init__(self, name, description, minimal_refresh_delay, persistence):
         self.delay = minimal_refresh_delay
-        super().__init__(name, description)
+        super().__init__(name, description, presistence)
 
     @abstractmethod
     def fetch_new(since):
@@ -28,13 +33,16 @@ class OndemandSource(Source):
         # TODO: adapt this to be parallel-safe?
         # check if minimal_refresh_delay has passed since latest fetch
         # return if it has not
-        latest_fetch = None
+        latest_fetch = self.get_latest_access_time()
         for message in self.ferch_new(latest_access):
             self.save_message(**message)
         # update latest_fetch
 
+    def get_latest_access_time(self):
+        return None
+
 class WebhookSource(Source):
     @abstractmethod
-    def handle():
+    def handle(self):
         pass
 
