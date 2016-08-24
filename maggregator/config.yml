@@ -10,7 +10,7 @@ sources:
             description: Another test source
             stub_message: w
     webhook test source:
-        test source3:
+        test_source3:
             description: kjgkjgkjg
             stub_message: kljh
 
@@ -20,10 +20,15 @@ feeds:
         sources:
             - test_source1
             - test_source2
+    webhook_test_feed:
+        description: dflgjsdfg
+        sources:
+            - test_source3
 
 users:
     test_user:
         description: Test user
         feeds:
             - test_feed
+            - webhook_test_feed
             

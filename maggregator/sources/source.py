@@ -1,17 +1,22 @@
 from abc import ABCMeta, abstractmethod
 from good import Schema
+from datetime import datetime
+from dateparser import parse
 
 class Source(metaclass=ABCMeta):
     def __init__(self, name, description, persistence):
         self.name = name
         self.description = description
         self.persistence = persistence
-    def save_message(self, message, sender, datetime):
+    def save_message(self, message, sender, time):
+        if not isinstance(time, datetime):
+            time = parse(time)
         self.persistence.messages.insert_one({
             'message' : message,
             'sender' : sender,
-            'datetime' : datetime,
-            'source' : self.name
+            'datetime' : time,
+            'source' : self.name,
+            'actual_datetime' : datetime.utcnow()
         })
     @classmethod
     def get_config_validators(cls):
