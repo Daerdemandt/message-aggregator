@@ -1,8 +1,8 @@
 from flask import Flask, abort, request
-from pprint import pformat
 from config import parse
 from sources import spawn
 from persistence import makedb
+from bson.json_util import dumps
 
 config = parse('config.yml')
 
@@ -55,7 +55,7 @@ def get_feed(feedname):
             pass
 
     res = persistence.messages.find({'source': {'$in': feed['source_names']}})
-    return pformat(list(res))
+    return dumps(list(res))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
