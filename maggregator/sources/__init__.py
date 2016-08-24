@@ -8,7 +8,7 @@ by_config_name = {
 }
 
 def spawn(source_list, persistence):
-    all_sources = []
+    all_sources = {}
     for source_type, sources in source_list.items():
         cls = by_config_name[source_type]
         for source_name, config_params in sources.items():
@@ -18,11 +18,6 @@ def spawn(source_list, persistence):
                 'persistence' : persistence
             }
             source = cls(**params)
-            all_sources.append(source)
-    result = {
-        'all' : all_sources,
-        'webhook' : {source.name:source for source in all_sources if isinstance(source, WebhookSource)},
-        'ondemand' : [source for source in all_sources if isinstance(source, OndemandSource)]
-    }
-    return result
+            all_sources[source_name] = source
+    return all_sources
 
