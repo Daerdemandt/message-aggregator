@@ -27,9 +27,9 @@ class Source(metaclass=ABCMeta):
 
 
 class OndemandSource(Source):
-    def __init__(self, minimal_refresh_delay, name, description, persistence):
+    def __init__(self, minimal_refresh_delay, **kwargs):
         self.delay = minimal_refresh_delay
-        super().__init__(name, description, persistence)
+        super().__init__(**kwargs)
 
     @abstractmethod
     def fetch_new(since):
@@ -38,7 +38,7 @@ class OndemandSource(Source):
     def refresh(self):
         # TODO: THIS IS NOT THREAD-SAFE
         latest_access = self.get_latest_access_time()
-        time_delta = datetime.utcnow() - self.get_latest_access_time()
+        time_delta = datetime.utcnow() - latest_access
         if time_delta.total_seconds() < self.delay:
             return
         for message in self.fetch_new(latest_access):
@@ -51,6 +51,15 @@ class OndemandSource(Source):
         if record:
             return record['latest_access_time']
         return datetime.utcfromtimestamp(0)
+
+    @classmethod
+    def get_config_validators(cls):
+        return {
+            **super().get_config_validators(),
+            'minimal_refresh_delay' : int,
+        }
+
+
 
 class WebhookSource(Source):
     @abstractmethod

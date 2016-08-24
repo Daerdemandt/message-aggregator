@@ -2,21 +2,12 @@
 # List of sources, grouped by source type
 # No 2 sources may have the same name, even if their types are different
 sources:
-    test source:
-        test_source1:
-            description: Some test source
-            stub_message: e
-        test_source2:
-            description: Another test source
-            stub_message: w
     webhook test source:
-        test_source3:
-            description: kjgkjgkjg
-            stub_message: kljh
+        test_source1:
+            description: Test source that utilises webhooks
     on demand test source:
-        test_source4:
-            description: sgsgsgwergf
-            stub_message: sdfgsgsrgr
+        test_source2:
+            description: Test source that works on-demand
             minimal_refresh_delay: 5
 
 feeds:
@@ -25,16 +16,9 @@ feeds:
         sources:
             - test_source1
             - test_source2
-            - test_source4
-    webhook_test_feed:
-        description: dflgjsdfg
-        sources:
-            - test_source3
-
 users:
     test_user:
         description: Test user
         feeds:
             - test_feed
-            - webhook_test_feed
             

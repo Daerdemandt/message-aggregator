@@ -2,7 +2,6 @@ from .source import *
 from .test import *
 
 by_config_name = {
-    'test source' : TestSource,
     'webhook test source' : WebhookTestSource,
     'on demand test source' : OndemandTestSource
 }
