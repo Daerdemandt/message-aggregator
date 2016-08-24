@@ -13,6 +13,11 @@ sources:
         test_source3:
             description: kjgkjgkjg
             stub_message: kljh
+    on demand test source:
+        test_source4:
+            description: sgsgsgwergf
+            stub_message: sdfgsgsrgr
+            minimal_refresh_delay: 5
 
 feeds:
     test_feed:
@@ -20,6 +25,7 @@ feeds:
         sources:
             - test_source1
             - test_source2
+            - test_source4
     webhook_test_feed:
         description: dflgjsdfg
         sources:

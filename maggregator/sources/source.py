@@ -27,25 +27,30 @@ class Source(metaclass=ABCMeta):
 
 
 class OndemandSource(Source):
-    def __init__(self, name, description, minimal_refresh_delay, persistence):
+    def __init__(self, minimal_refresh_delay, name, description, persistence):
         self.delay = minimal_refresh_delay
-        super().__init__(name, description, presistence)
+        super().__init__(name, description, persistence)
 
     @abstractmethod
     def fetch_new(since):
         pass
 
-    def refresh():
-        # TODO: adapt this to be parallel-safe?
-        # check if minimal_refresh_delay has passed since latest fetch
-        # return if it has not
-        latest_fetch = self.get_latest_access_time()
-        for message in self.ferch_new(latest_access):
+    def refresh(self):
+        # TODO: THIS IS NOT THREAD-SAFE
+        latest_access = self.get_latest_access_time()
+        time_delta = datetime.utcnow() - self.get_latest_access_time()
+        if time_delta.total_seconds() < self.delay:
+            return
+        for message in self.fetch_new(latest_access):
             self.save_message(**message)
-        # update latest_fetch
+        # TODO: this actually could lose a message if it happened after calculating time_delta, but before following line:
+        self.persistence.status.update_one({'source' : self.name}, {'$set' : {'latest_access_time' : datetime.utcnow()}}, True)
 
     def get_latest_access_time(self):
-        return None
+        record = self.persistence.status.find_one({'source' : self.name})
+        if record:
+            return record['latest_access_time']
+        return datetime.utcfromtimestamp(0)
 
 class WebhookSource(Source):
     @abstractmethod

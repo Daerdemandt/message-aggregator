@@ -38,16 +38,21 @@ class WebhookTestSource(WebhookSource):
 
 class OndemandTestSource(OndemandSource):
     config_validators = {'stub_message':str}
-    def __init__(self, name, description, stub_message, persistence):
+    def __init__(self, minimal_refresh_delay, name, description, stub_message, persistence):
         self.stub_message = stub_message
-        super().__init__(name, description, persistence)
+        super().__init__(minimal_refresh_delay, name, description, persistence)
 
     @classmethod
     def get_config_validators(cls):
         return {
             **super().get_config_validators(),
+            'minimal_refresh_delay' : int,
             'stub_message' : str
         }
 
-    def fetch_new(since):
-       return [self.stub_message] 
+    def fetch_new(self, since):
+       return [{
+            'message' : self.stub_message,
+            'sender' : 'time itself',
+            'time' : 'now'
+        }]
