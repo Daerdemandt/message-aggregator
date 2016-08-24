@@ -8,7 +8,7 @@ class Source(metaclass=ABCMeta):
         self.name = name
         self.description = description
         self.persistence = persistence
-    def save_message(self, message, sender, time):
+    def save_message(self, message, sender, time, metadata=None):
         if not isinstance(time, datetime):
             time = parse(time)
         self.persistence.messages.insert_one({
@@ -16,7 +16,8 @@ class Source(metaclass=ABCMeta):
             'sender' : sender,
             'datetime' : time,
             'source' : self.name,
-            'actual_datetime' : datetime.utcnow()
+            'actual_datetime' : datetime.utcnow(),
+            'metadata' : metadata
         })
     @classmethod
     def get_config_validators(cls):
