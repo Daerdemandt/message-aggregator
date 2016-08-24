@@ -11,9 +11,12 @@ def spawn(source_list, persistence):
     all_sources = []
     for source_type, sources in source_list.items():
         cls = by_config_name[source_type]
-        for source_name, params in sources.items():
-            params['name'] = source_name
-            params['persistence'] = persistence
+        for source_name, config_params in sources.items():
+            params = {
+                **config_params,
+                'name' : source_name,
+                'persistence' : persistence
+            }
             source = cls(**params)
             all_sources.append(source)
     result = {
