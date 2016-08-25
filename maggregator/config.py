@@ -1,5 +1,5 @@
 from konf import Konf
-from good import Schema, Optional, Extra, Reject, Invalid
+from good import Schema, Optional, Extra, Reject, Invalid, Any, Fallback
 from collections import Counter
 
 import sources
@@ -33,12 +33,17 @@ is_valid_user_list =  Schema({
     }
 })
 
+is_valid_server_conf = Schema({
+    'port' : Any(int, Fallback(5000)),
+    'debug' : Any(bool, Fallback(True))
+})
 
 def parse(filename):
     k = Konf(filename)
 
     # syntax
     config = {
+        'server' : k('server', is_valid_server_conf),
         'sources' : k('sources', is_valid_source_list),
         'feeds' : k('feeds', is_valid_feed_list),
         'users' : k('users', is_valid_user_list)

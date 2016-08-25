@@ -1,3 +1,6 @@
+server:
+    port: 5000 # If you are changing this, don't forget to change at docker-compose too!
+    debug: True
 
 # List of sources, grouped by source type
 # No 2 sources may have the same name, even if their types are different
