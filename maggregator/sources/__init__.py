@@ -1,10 +1,12 @@
 from .source import *
 from .test import *
 from .smscru import SmscruSource
+from .nexmo import NexmoSource
 
 by_config_name = {
     'webhook test source' : WebhookTestSource,
     'on demand test source' : OndemandTestSource,
+    'nexmo' : NexmoSource,
     'smsc.ru' : SmscruSource
 }
 
