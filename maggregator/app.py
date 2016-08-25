@@ -33,11 +33,6 @@ def handle_webhook(source):
 def get_health():
     return "Ok"
 
-#TODO: this is for debugging purposes only, remove
-@app.route('/config')
-def display_config():
-    return pformat(config)
-
 @app.route('/feeds/<feedname>')
 def get_feed(feedname):
     if feedname not in feeds:
