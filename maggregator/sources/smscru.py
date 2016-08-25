@@ -16,14 +16,17 @@ class SmscruSource(OndemandSource):
     """
     @classmethod
     def get_config_validators(cls):
+        validators = super().get_config_validators()
+        del validators['minimal_refresh_delay'] # we know it and provide it here, not from config
         return {
-            **super().get_config_validators(),
+            **validators,
             'login' : str,
             'password' : str,
         }
     def __init__(self, login, password, **kwargs):
         self.login = login
         self.password = password
+        kwargs['minimal_refresh_delay'] = 21 # limit is 3 per minute
         super().__init__(**kwargs)
 
     def fetch_new(self, since):

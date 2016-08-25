@@ -18,7 +18,6 @@ sources:
 #    smsc.ru:
 #        smsc-1:
 #            description: Messages through smsc.ru, number is +12345556789
-#            minimal_refresh_delay: 21 # limit is 3 per minute
 #            login: some_login
 #            password: some_password
 #    nexmo: # Callback URLs are /webhooks/<name>, for example /webhooks/nexmo-1
