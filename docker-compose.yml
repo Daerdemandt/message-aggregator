@@ -7,5 +7,7 @@ web:
     - ./maggregator:/maggregator
   links:
     - db
+  restart: always
 db:
   image: mongo
+  restart: always
