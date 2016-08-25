@@ -1,6 +1,9 @@
 
 # List of sources, grouped by source type
 # No 2 sources may have the same name, even if their types are different
+# Uncomment sources you need (providing credentials if needed)
+# Group sources into feeds (one source can be in many feeds)
+# Add users who are allowed to access these feeds
 sources:
     webhook test source:
         test_source1:
@@ -9,6 +12,15 @@ sources:
         test_source2:
             description: Test source that works on-demand
             minimal_refresh_delay: 5
+#    smsc.ru:
+#        smsc-1:
+#            description: Messages through smsc.ru, number is +12345556789
+#            minimal_refresh_delay: 21 # limit is 3 per minute
+#            login: some_login
+#            password: some_password
+#    nexmo: # Callback URLs are /webhooks/<name>, for example /webhooks/nexmo-1
+#        nexmo-1:
+#            description: Messages through number +12345556789 at nexmo.com
 
 feeds:
     test_feed:
@@ -16,9 +28,20 @@ feeds:
         sources:
             - test_source1
             - test_source2
+    example_feed:
+        description: Feed with all the examples
+        sources:
+            - test_source1
+#            - smsc-1
+#            - nexmo-1
 users:
     test_user:
         description: Test user
         feeds:
             - test_feed
             
+    example_user:
+        description: User of example feed
+        feeds:
+            - example_feed
+
