@@ -1,9 +1,11 @@
 from .source import *
 from .test import *
+from .smscru import SmscruSource
 
 by_config_name = {
     'webhook test source' : WebhookTestSource,
-    'on demand test source' : OndemandTestSource
+    'on demand test source' : OndemandTestSource,
+    'smsc.ru' : SmscruSource
 }
 
 def spawn(source_list, persistence):
