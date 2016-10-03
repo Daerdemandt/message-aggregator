@@ -1,4 +1,8 @@
 # message-aggregator
+[![Code Climate](https://codeclimate.com/github/Daerdemandt/message-aggregator/badges/gpa.svg)](https://codeclimate.com/github/Daerdemandt/message-aggregator)
+[![Test Coverage](https://codeclimate.com/github/Daerdemandt/message-aggregator/badges/coverage.svg)](https://codeclimate.com/github/Daerdemandt/message-aggregator/coverage)
+[![Issue Count](https://codeclimate.com/github/Daerdemandt/message-aggregator/badges/issue_count.svg)](https://codeclimate.com/github/Daerdemandt/message-aggregator)
+
 Simple webservice to aggregate messages from various providers (especially sms gateways)
 
 Supported sources:
